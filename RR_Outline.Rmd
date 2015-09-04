@@ -1,0 +1,93 @@
+---
+title: "Dynamic Reports & Reproducible Research"
+author: "Ben Williams"
+date: "September 1, 2015"
+output: 
+  pdf_document: 
+    keep_tex: yes
+geometry: margin=1in
+fontsize: 11pt
+---
+ We will be using RStudio to learn about and use *knitr* during the lecture, so please use RStudio for the purposes of the class. Apologies for any inconvenience. 
+
+##Programs needed  
+R v3.2.2  https://www.r-project.org/  
+RStudio  v0.99.467 https://www.rstudio.com/  
+Pandoc  v1.15.0.6  http://pandoc.org/  
+TeX/LaTex  http://miktex.org/ (for Windows) http://tug.org/mactex/ (for Mac)  
+GitHub https://education.github.com/pack sign up for the student developer pack and get a free micro account (provides 5 free private repositories)
+
+##Packages needed  
+knitr  
+markdown
+
+##Other packages to load  
+ggplot2; maps; mapdata; mgcv; plyr; reshape2;
+lubridate; devtools; pander
+
+## Coding style guide  
+A good method for styling your code in a way that others can read it  
+http://adv-r.had.co.nz/Style.html
+
+## R Markdown  
+Information on the R flavor of Markdown  
+http://rmarkdown.rstudio.com/  
+
+RStudio cheatsheets
+https://www.rstudio.com/resources/cheatsheets/
+
+GitHub cheatsheet
+https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf
+
+LaTex wiki
+https://en.wikibooks.org/wiki/LaTeX
+
+Stats and coding help  (do yourself a favor and search these sites before asking questions)  
+http://stats.stackexchange.com/  
+http://stackoverflow.com/
+
+
+
+
+# What is a good analysis?
+1. Data
+2. Code to format and analyze the data
+3. Code to produce figures and tables 
+4. Text to describe the methods and interpret the results
+
+# Typically this involves...
+1. Data <- in Excel
+2. Analysis <- R and Excel (or MatLab, Splus, SAS etc.)
+3. Word & PowerPoint
+4. Lots of copy and paste of tables, figures, etc.
+
+##Problems with this...
+1. Copy and paste <- enough said
+2. Interpretation is seperated from analysis
+3. Word can't utilize version control well
+4. Excel and Word are proprietary and not always backward compatible (try opening files from 2000)
+
+#How to deal with this
+1. Work with markdown and/or LaTeX
+2. Code and write document in a single location
+3. Maintain version control of all components
+4. Clearly show how your analysis was performed and allow others to evaluate and repeat the procedures
+
+#Getting started  
+##The environment
+   Github, RStudio  
+   
+##Data
+   Keep in a text type format (human and machine readable, without proprietary formats)
+   .txt or .csv not .xlxs  
+   
+##Data cleanup and preservation
+   Do not manipulate the stored raw data as this cannot be tracked  
+   Any changes occur via code (you may need substantial coding skills for this)  
+   
+##Analyses
+   Document what you have done with comments, lots of comments  
+   
+##Presentation
+   Writing a document (Word, .pdf, or html)
+   Slides (Rpresentation, Beamer, etc.)
