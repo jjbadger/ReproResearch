@@ -1,0 +1,32 @@
+---
+title: 'Fish 627: Introduction to Dynamic Reports & Reproducible Research'
+author: "Ben Williams"
+date: "Oct 20 & 22, 2015"
+output: html_document
+---
+#Data Data Data...  
+##Is your data available for sharing?
+*[White et al. 2013. Nine simple ways to make it easier to (re)use your data. Special Issue - Data Sharing in Ecology and Evolution. Ideas in Ecology and Evolution 6(2): 1-10](http://library.queensu.ca/ojs/index.php/IEE/article/view/4608/4898)*
+
+1. Share your data  
+2. Provide metadata  
+3. Provide an uprocessed form of the data  
+4. Use standard file formats  
+5. Use good null values  
+6. Make it easy to combine your data with other datasets  
+7. Perform basic quality control  
+8. Use an established repository 
+9. Use an established open license 
+ 
+##Data quality control procedures  
+*[From Dr. John Hoenig June 2006](http://www.vims.edu/people/hoenig_jm/pubs/Hoenig_data_quality_control.pdf)*  
+1. Every time you make a change to a database, enter your name, the date, and a description and justificatin of the change.  
+2. Data must be proofread at least once. Enter name of person doing the checking and date the data were checked.  
+3. Every database should have embedded in it an explanation of every column heading, every symbol used, etc.  
+4. A person examining a database should be able to understand it without having to look elsewhere for explanations.  
+
+##Your data should be human and machine readable!
+*Pretty much excludes .xlsx files...*  
+
+##Look at the data  
+Missing values or zeros, outliers, correct units? Don't use 999, etc.
