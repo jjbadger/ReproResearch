@@ -175,7 +175,7 @@ more flexible in a LOWESS model than in a linear model). The model essentially a
 different ozone response to temperature and wind conditions at different levels of solar radiation:
 
 ```{r i, eval=FALSE}
-ozo2 <- loess(cubert ~ wind+temperature+radiation, data = enviro, span=1, degree=2)
+ozo2 <- loess(ozone ~ wind+temperature+radiation, data = enviro, span=1, degree=2)
 summary(ozo2)
 ```
 
