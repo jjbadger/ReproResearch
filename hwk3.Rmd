@@ -1,0 +1,243 @@
+---
+title: "FISH 627: Homework 3"
+author: "Your Name Here"
+date: "Due by end of Thursday, October 22, 2015"
+output: html_document
+---
+
+<span style="color:red">**Total: 10 points**  
+Out of fairness to others (and to me) I cannot accept late homework. I will subtract 0.5 points per day after the due date and will not accept homework that is more than a week late! If you have valid reasons such as field work, conferences, etc. that prevent you from turning in a homework on time, talk to me beforehand!</span>  
+
+#Fitting a LOWESS model and plotting results:  
+For this problem we will estimate average ozone values at different levels of wind and temperature (as well as different levels of solar radiation) and plot the resulting estimates as a smooth surface.
+
+**a.** 
+<span style="color:red">(1 pt.)</span>  Attach the *lattice* library and explore the ozone data in data frame "environmental". For simplicity, you may also want to attach the environmental data frame, but make sure you enderstand what happens when you do! 
+```{r load, message=FALSE}
+library(lattice)
+#?environmental
+attach(environmental) #attach can induce some issues so we will detach asap
+enviro <- environmental
+detach(environmental)
+```
+
+Plot a histogram of ozone using *'hist'*. Compare a histogram of these "raw" ozone values to one that uses 3^rd^ root transformed values (ozone^(1/3)). <span style="color:blue"> Describe the difference and explain
+why we would want to transform the ozone variable if used as dependent variable in a typical regression (this requires some familiarity with standard regression assumptions).</span> 
+
+```{r a}
+
+```
+
+
+
+**b.**
+<span style="color:red">(0.5 pt.)</span> Fit a LOWESS model of (transformed) ozone levels on wind and temperature using the 'loess' function, similar to the model for GAK 1 temperatures that we fit in Module 8:
+```{r b, eval=FALSE}
+ozol <- loess(formula, span = 1, degree = 2)
+```
+
+Use the suggested setting and insert the appropriate *formula*.
+
+**c.**
+<span style="color:red">(1 pt.)</span> The LOWESS fit does not have regression coefficients like a linear regression model to compute predicted values, but you can extract the fitted values and residuals from the fitted model object (```ozo1```) using functions ```fitted``` and ```resid```. Plot the observed values (on the 
+transformed scale!!) against the fitted values. Add a 1:1 line to the plot (intercept 0, slope 1) that 
+would denote a perfect fit (i.e. a 1:1 correspondence):  
+```abline(0,1)```
+```{r c}
+
+```
+
+**d.**
+<span style="color:red">(1 pt.)</span>  The LOWESS model is similar to any linear regression in that it finds fitted values by minimizing the sum of squared differences between the observations and the fitted regression line or (in this case) the fitted 2-dimensional surface (as in "least-squares" regression, although LOWESS differs in that it uses a modified least-squares criterion). The model fit can be 
+evaluated by examining the residual variability, which is described by the spread of the observed 
+values around the fitted values and is typically quantified by the 'residual standard error'.  
+
+You can view the residual standard error in the summary output using:  
+```summary(ozo1)```
+```{r d}
+
+```
+
+For comparison, compute the standard error directly from the residuals. The residual standard error can be estimated as:  
+
+$$	\hat{\sigma}_{\varepsilon}^2=\sqrt{\sum\limits_{i=1}^n\sigma_{i}^2\Big/(n-p)} $$  
+
+All the information you need is either in the `summary` output (n is the number of observations
+and p is the equivalent number of parameters) or can be extracted from the fitted object (i.e. 
+```resid(ozo1)``` returns the vector of residuals or ε). You can use vectorized arithmetic, that is you 
+can square the entire residual vector ε and then sum over the elements εi using`'sum`. There is no 
+need for looping (!!), and the above formula can be written as a single short expression using 
+`sqrt`, `sum`, and basic arithmetic operators. You can take the values for *n* and *p* from 
+'summary(ozo1)' and simply type them into your expression to compute the standard error or 
+you can extract n and p from the summary object and then use them in your expression:  
+```p <- ozo1$enp```   
+```n <- ozo1$n```  
+
+Use ```str(ozo1)``` to examine all available elements.  
+(Note that the computed value for the standard error of the residuals differs somewhat from the 
+value returned in the summary output due to slight differences in the way they are calculated).
+
+**e.**
+<span style="color:red">(0.5 pt.)</span> Remember that any regression model "decomposes" the data into predicted values 
+(the fitted values you extracted earliler) plus the residual variability (the residuals you extracted 
+earlier), that is: $y = \hat{y} + \hat{\varepsilon}$ where $y$ is the data vector, $\hat{y}$  is a vector of fitted values, and $\hat{\varepsilon}$ is a vector of residuals.   
+
+Verify that the sum of the fitted values and the residuals is equal to the observed ozone values
+(e.g. by plotting (fitted values + residual values) against (observed values) or by computing the 
+differences, which should all be 0).
+```{r e}
+
+```
+
+**f.**
+<span style="color:red">(1.5 pt.)</span> Examine the fit of the model by doing some basic residual diagnostics / plots. Split the graphics window into 2 rows and 2 columns to examine all plots at once: 
+```par(mfrow=c(2,2))```  
+Create the following set of plots, which should be part of model checking whenever you fit a 
+statistical model: 
+
+1. Plot residuals (on y-axis) against fitted values, add a horizontal line at 0 (```abline(h=0)```)
+2. Plot residuals against wind and add line at 0
+3. Plot residuals against temperature and add line at 0
+4. Create a ```qqplot``` that compares the quantiles of the residual distribution against the 
+corresponding quantiles of a normal distribution. If residuals are normally distributed, they 
+should roughly fall on a straight line:   
+   ```qqnorm(resid(ozo1))```  
+   ```qqline(resid(ozo1))```
+```{r f}
+
+```
+
+<span style="color:blue"> Briefly discuss whether the regression assumptions are met: There should be no obvious patterns in the residuals (i.e. they should be randomly distributed around the zero line), no 
+heteroscedasticity (i.e. variability should be roughly constant across different fitted values and 
+different values of the covariates), and they should be approximately normally distributed.</span> 
+
+**g.**
+<span style="color:red">(1.5 pt.)</span> 
+Next, we set up a grid to compute predicted values on a regularly spaced grid for the purpose of plotting the predicted model surface (which provides an estimate of how ozone levels vary with wind speed and temperature):
+
+* Use ```seq``` to create a regularly spaced sequence of numbers from the minimum wind
+measurement to the maximum and from the minimum temperature to the maximum. Use 
+about 50 equally spaced values (i.e. ```length.out=50```)  
+```wnd <- seq(..., ..., ...) ```  
+```temp <- seq(..., ..., ...)```  
+* Create a matrix that contains a combination of each value in 'wnd' and each value in
+```temp```:
+```grd <- expand.grid(list(wind=wnd, temperature = temp))```  
+Examine ```grd``` to understand its structure!!
+
+* Compute predicted values: Use the resulting matrix (```grd```) to compute predicted values
+and then to plot them. Note that the names of the variables in ```grd``` MUST match the 
+names of the variables that we used in fitting the model! You can then use the "new" 
+wind and temperature values to compute the predicted values at each combination of 
+wind and temperature in ```grd```:  
+```ozo1.fit <- predict(ozo1, newdata = grd)```  
+Examine the structure of the resulting matrix and compare its dimensions to the length of  
+```wnd``` and ```temp```.
+
+* Following the example in Module 8, create an image plot of the fitted ozone values (on
+transformed scale) against wind and temperature:  
+```image(x=,yu=, z=, ...)``` Add appropriate axis labels & title.  
+ Use ```col=terrain.colors(50)```
+ 
+ * Use the ```contour``` function to add contours to the image plot. ```contour``` takes the same
+x,y,z values as ```image```, but be sure to set ```add=T``` to add contours to the existing plot 
+(otherwise you get a new plot with contours only).
+
+*  Finally, use ```points``` to show where the actual measurements were taken as we did in Module 9. 
+
+<span style="color:blue"> Comment on the ability of the model to estimate ozone levels at a wind speed of 20mph when temperatures are in the 80s or 90s!</span> 
+```{r g}
+
+```
+
+**h.**
+<span style="color:red">(0.5 pt.)</span> 
+Compare your image plot to an alternative solution that uses the lattice function
+'contourplot', which automatically adds a legend. It works somewhat differently and we need 
+to add the fitted values to the 'grd' matrix in order to use it:
+```{r h, eval=FALSE}
+grd[, "fit"] <- c(predict(ozo1, grd))  
+contourplot(fit ~ wind + temperature, data = grd,  
+ cuts = 10, region = TRUE,  
+ xlab = "Wind Speed (mph)",  
+ ylab = "Temperature (F)",  
+ main = "Cube Root Ozone (cube root ppb)",  
+ col.regions = terrain.colors(50))
+```
+
+**i.**
+<span style="color:red">(1.5 pt.)</span> 
+Extend the model with two independent variables ```ozo1``` to include an additional
+covariate - solar radiation - which may also have an effect on ozone levels. The model fits a 
+"hyper-surface" to the data in 3 dimensions. You can think of it as a multiple regression of ozone 
+on three independent variables with all possible interactions. (where the "interactions" are a bit 
+more flexible in a LOWESS model than in a linear model). The model essentially allows for a 
+different ozone response to temperature and wind conditions at different levels of solar radiation:
+
+```{r i, eval=FALSE}
+ozo2 <- loess(cubert ~ wind+temperature+radiation, data = enviro, span=1, degree=2)
+summary(ozo2)
+```
+
+Use an approximate F-test to compare the model fits:  
+```anova(ozo1, ozo2)```
+
+This is equivalent to comparing two nested linear models. From regression you should remember 
+that nested models can be compared by evaluating the reduction in residual sum of squares 
+(RSS) that results from fitting a more complex model (e.g. by adding another covariate in the 
+model). The 'anova' function is used to carry out this F-test (which is only approximate in this 
+case because this is not a linear model).
+
+<span style="color:blue">How much did the residual sum of squares decrease in the more complex model (ozo2) compared to the simpler model (ozo1)? How many extra "equivalent parameters" were 
+needed to achieve that reduction?</span> 
+
+The F-ratio computes the relative reduction in RSS between the two models, standardized by the 
+difference in number of parameters. The better the more complex model fits (i.e. the lower its 
+RSS) the larger the F-value becomes and the more reason we have to reject the simpler model. It 
+can be shown that F has an "F distribution" under the assumption that the simpler model is true, 
+thus we can evaluate the probability that F is as large as or larger than the observed F using the 
+theoretical F distribution (which can easily be computed and used to be tabulated in older Stats 
+
+<span style="color:blue"> From the output above, what is the probability that we would get an F value as large as the observed one under the "null hypothesis" (which states that the simpler model is the "true" model)? What can you conclude about the models (i.e. which one appears to be the 
+better model)?</span> 
+
+**j.**
+<span style="color:red">(1 pt.)</span> 
+pt) Lastly, set up a 3-D grid with 4 different levels of radiation, compute predicted values,
+and plot the results as before, but with a different fitted surface at each of 4 radiation levels:
+```rad <- seq(min(radiation), max(radiation), length = 4)```  
+```grd <- expand.grid(list(wind=wnd, temperature = temp, radiation=rad))```  
+Examine ```grd``` to understand its structure!
+
+Compute predicted values and add them to the matrix:  
+```pred <- predict(ozo2, grd)```  
+Examine ```pred``` (using ```str```, ```dim```, etc) to understand its structure! It returns an array of predicted values from our regression model with one predicted value at each combination of wind speed, 
+temperature, and radiation level! 
+
+The next line of code converts the array to a long vector and appends it to the ```grd``` matrix:   
+```grd[, "fit"] <- pred```
+
+Using ```c()``` converts the array to a matrix (simply type ```c(pred)``` at the prompt to look at the 
+result). You would also use: ```as.vector(pred)```. If you didn't know (or trust me) that this works 
+properly, you would have to carefully check that the predicted values in the resulting vector 
+correspond to the rows in ```grd```. Of course, ```expand.grid()``` was designed to make sure that it 
+works with ```predict()```.
+
+Examine ```grd``` again to understand what you just did!  
+Create a plot of the fitted values at different combinations of wind and temperature and at four 
+different levels of radiation:
+
+```{r j, eval=FALSE}
+contourplot(fit ~ wind * temperature | radiation, data = grd,
+ cuts = 10, region = TRUE,
+ xlab = "Wind Speed (mph)",
+ ylab = "Temperature (F)",
+ main = "Cube Root Ozone (cube root ppb)",
+ col.regions = terrain.colors(50))
+```
+
+In the resulting figure, the solar radiation level increases from the lower left panel to the upper 
+right panel as indicated by the orange vertical bar in the strips at the top of each panel.   
+<span style="color:blue">How do the estimated ozone levels differ at different levels of radiation?</span> 
+
+
