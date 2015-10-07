@@ -240,4 +240,5 @@ In the resulting figure, the solar radiation level increases from the lower left
 right panel as indicated by the orange vertical bar in the strips at the top of each panel.   
 <span style="color:blue">How do the estimated ozone levels differ at different levels of radiation?</span> 
 
-
+**Code used to geneerate this document**  
+https://github.com/ben-williams/ReproResearch/blob/master/hwk3.Rmd
